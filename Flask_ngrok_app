@@ -1,0 +1,37 @@
+import pandas as pd
+from flask_ngrok import run_with_ngrok
+from flask import Request, jsonify, Flask
+import random as rk
+
+app = Flask(__name__)
+run_with_ngrok(app)
+
+d = {
+    'name': 'Fabio',
+    'surname': 'Galarza',
+    'age': '32',
+    'graduation': 'biological sciences',
+    'specialization': ['biotechnology', 'python', 'data science'],
+    'birthplace': ['São Paulo - SP, Brazil'],
+    'experience_years': '3',
+    'tags': ['python', 'biology', 'biotechnology', 'data science',
+             'machine learning']
+}
+
+@app.route('/')
+def home():
+  return "<marquee><h3>TO CHECK IT PUT ADD'/input'TO THE URL AND TO CHECK OUT PUT ADD'/output'TO THE URL"
+
+@app.route('/input')
+def input():
+  return jsonify(d)
+
+@app.route('/output', methods=['GET', 'POST'])
+
+def predJson():
+  pred = rk.choice(['positive', 'negative'])
+  nd = d
+  nd['prediction'] = pred
+  return jsonify(nd)
+
+app.run()
